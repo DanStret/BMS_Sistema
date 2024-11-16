@@ -14,7 +14,7 @@ function Prezurisacion() {
   const [ledStatusText, setLedStatusText] = useState("Desconocido");
   const [isAutomatic, setIsAutomatic] = useState(true);
   const [showImage, setShowImage] = useState(false);
-  const [imageUrl] = useState("https://scontent.flim18-1.fna.fbcdn.net/..."); // URL de la imagen
+  const [imageUrl] = useState("https://scontent.flim18-1.fna.fbcdn.net/v/t1.6435-9/138752942_123194292971714_2934574921352228503_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHj6t8q62SldDEucr6hK7OTtWPe9AOLp8S1Y970A4unxHlfxU3SJgc_EXhX_awb97TwMo87jD8aRp6PZGFEAivz&_nc_ohc=VaqMHVkZRKwQ7kNvgHpRUWb&_nc_ht=scontent.flim18-1.fna&_nc_gid=AhxO7BFmUblo62Y1vqnn8L9&oh=00_AYAtLBlVADTaUoliRGoi7gfP93d_mltptMVCBUtFF3z5hQ&oe=6740EF38 "); // URL de la imagen
 
   // Estados de los dispositivos
   const [variadorState, setVariadorState] = useState(false);

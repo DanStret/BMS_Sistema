@@ -5,7 +5,7 @@ import { GaugeComponent } from "react-gauge-component";
 import ToggleSwitch from "../components/ToggleSwitch/ToggleSwitch";
 import Button from "../components/FixedPlugin/Buttons/Button";
 import LedIndicator from "../components/Leds/LedIndicator";
-import ImageModal from "../components/FixedPlugin/ImageModal/ImageModal"; // Importa el modal de imagen
+import ImageModal from "../components/FixedPlugin/ImageModal/ImageModal"; 
 import { FiActivity, FiZap, FiThermometer, FiPower, FiEye } from "react-icons/fi";
 import { MdOutlineSensors } from "react-icons/md";
 
@@ -14,7 +14,7 @@ function Prezurisacion() {
   const [ledStatusText, setLedStatusText] = useState("Desconocido");
   const [isAutomatic, setIsAutomatic] = useState(true);
   const [showImage, setShowImage] = useState(false);
-  const [imageUrl] = useState("https://scontent.flim18-1.fna.fbcdn.net/v/t1.6435-9/138752942_123194292971714_2934574921352228503_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHj6t8q62SldDEucr6hK7OTtWPe9AOLp8S1Y970A4unxHlfxU3SJgc_EXhX_awb97TwMo87jD8aRp6PZGFEAivz&_nc_ohc=VaqMHVkZRKwQ7kNvgHpRUWb&_nc_ht=scontent.flim18-1.fna&_nc_gid=AhxO7BFmUblo62Y1vqnn8L9&oh=00_AYAtLBlVADTaUoliRGoi7gfP93d_mltptMVCBUtFF3z5hQ&oe=6740EF38");
+  const [imageUrl] = useState("https://scontent.flim18-1.fna.fbcdn.net/..."); // URL de la imagen
 
   // Estados de los dispositivos
   const [variadorState, setVariadorState] = useState(false);
@@ -30,7 +30,7 @@ function Prezurisacion() {
     temperatura: 0,
     ia: 0,
     av: 0
-  })
+  });
 
   const fetchLedStatus = async () => {
     try {
@@ -62,7 +62,6 @@ function Prezurisacion() {
       const response = await fetch("https://apibms.onrender.com/api/device-status");
       const data = await response.json();
 
-      // Actualizar el estado de cada dispositivo basado en los datos obtenidos
       data.forEach((device) => {
         switch (device.dispositivo) {
           case "Variador":
@@ -93,7 +92,7 @@ function Prezurisacion() {
     const intervalId = setInterval(() => {
       fetchLedStatus();
       fetchIndicators();
-    }, 5000); // Actualiza cada 5 segundos
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -108,7 +107,7 @@ function Prezurisacion() {
     } catch (error) {
       console.error("Error al enviar el comando:", error);
     }
-  }
+  };
 
   const fetchIndicators = async () => {
     try {
@@ -120,11 +119,28 @@ function Prezurisacion() {
     }
   };
 
-  // Handlers para cada dispositivo
-  const handleVariadorToggle = (isOn) => {
-    setVariadorState(isOn);
-    enviarComando("Variador", isOn ? 1148 : 1076, isOn ? "ON" : "OFF");
+  const handleVariadorToggle = async (isOn) => {
+    setVariadorState(isOn); // Actualiza el estado del botón localmente
+  
+    // Determina el color y el estado del LED según el botón
+    const newColor = isOn ? 'verde' : 'rojo';
+    const newStatus = isOn ? 'encendido' : 'apagado';
+  
+    // Actualiza el LED visualmente
+    setLedColor(newColor);
+  
+    // Envía la actualización al backend
+    try {
+      await fetch("https://apibms.onrender.com/api/update-led-color", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ color: newColor, nombre_status: newStatus }),
+      });
+    } catch (error) {
+      console.error("Error al enviar la actualización del LED:", error);
+    }
   };
+  
 
   const handleRele1Toggle = (isOn) => {
     setRele1State(isOn);
